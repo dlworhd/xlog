@@ -1,20 +1,14 @@
 package main
 
 import (
-	"time"
-
 	"github.com/dlworhd/xlog/xlog"
 )
 
 func main() {
-	xlog.Default("INFO")
+	xlog.Default("DBG")
+	xlog.Info("INFO TEST")
+	xlog.Debug("DEBUG TEST")
+	xlog.Warn("WARN TEST")
+	xlog.Error("ERROR TEST")
 
-	for {
-		xlog.Info("INFO TEST")
-		xlog.Error("ERROR TEST")
-		xlog.Debug("DEBUG TEST")
-		xlog.Warn("WARN TEST")
-
-		time.Sleep(1 * time.Second)
-	}
 }

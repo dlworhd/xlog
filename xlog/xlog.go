@@ -63,25 +63,27 @@ func (l *Logger) log(level Level, message string) {
 	if levelPriority[level] < levelPriority[l.minLevel] {
 		return
 	}
-	plainLevel := level                              // e.g. "ERROR"
-	formattedLevel := fmt.Sprintf("%5s", plainLevel) // 고정폭 5글자 맞춤
-
-	// 색상 코드 매핑
 	var colorLevel string
-	switch plainLevel {
+	var colorMessage string
+
+	switch level {
 	case "INFO":
-		colorLevel = "\033[34m" + formattedLevel + "\033[0m"
+		colorLevel = "\033[34mINF\033[0m"
+		colorMessage = fmt.Sprintf("\033[34m%s\033[0m", message)
 	case "DEBUG":
-		colorLevel = "\033[32m" + formattedLevel + "\033[0m"
+		colorLevel = "\033[32mDBG\033[0m"
+		colorMessage = fmt.Sprintf("\033[32m%s\033[0m", message)
 	case "WARN":
-		colorLevel = "\033[38;5;208m" + formattedLevel + "\033[0m"
+		colorLevel = "\033[33mWRN\033[0m"
+		colorMessage = fmt.Sprintf("\033[33m%s\033[0m", message)
 	case "ERROR":
-		colorLevel = "\033[31m" + formattedLevel + "\033[0m"
+		colorLevel = "\033[31mERR\033[0m"
+		colorMessage = fmt.Sprintf("\033[31m%s\033[0m", message)
 	default:
-		colorLevel = formattedLevel
+		colorLevel = "DEBUG"
 	}
-	// 출력
-	formattedMessage := fmt.Sprintf("[%s][\033[40m%s:%d\033[0m][%s] %s ", colorLevel, l.File, l.Line, l.Time, message)
+
+	formattedMessage := fmt.Sprintf("%s %s \033[1;30m%s:%d\033[0m %s", colorLevel, l.Time, l.File, l.Line, colorMessage)
 	fmt.Println(formattedMessage)
 }
 
