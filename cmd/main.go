@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	xlog.Default("ERROR")
+	xlog.Default("INFO")
 
 	for {
 		xlog.Info("INFO TEST")
@@ -17,5 +17,4 @@ func main() {
 
 		time.Sleep(1 * time.Second)
 	}
-
 }

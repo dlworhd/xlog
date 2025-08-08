@@ -63,7 +63,25 @@ func (l *Logger) log(level Level, message string) {
 	if levelPriority[level] < levelPriority[l.minLevel] {
 		return
 	}
-	formattedMessage := fmt.Sprintf("[%s - %-5s] {\"Message\": \"%s\"} \"%s:%d\"", l.Time, level, message, l.File, l.Line)
+	plainLevel := level                              // e.g. "ERROR"
+	formattedLevel := fmt.Sprintf("%5s", plainLevel) // 고정폭 5글자 맞춤
+
+	// 색상 코드 매핑
+	var colorLevel string
+	switch plainLevel {
+	case "INFO":
+		colorLevel = "\033[34m" + formattedLevel + "\033[0m"
+	case "DEBUG":
+		colorLevel = "\033[32m" + formattedLevel + "\033[0m"
+	case "WARN":
+		colorLevel = "\033[38;5;208m" + formattedLevel + "\033[0m"
+	case "ERROR":
+		colorLevel = "\033[31m" + formattedLevel + "\033[0m"
+	default:
+		colorLevel = formattedLevel
+	}
+	// 출력
+	formattedMessage := fmt.Sprintf("[%s][\033[40m%s:%d\033[0m][%s] %s ", colorLevel, l.File, l.Line, l.Time, message)
 	fmt.Println(formattedMessage)
 }
 
