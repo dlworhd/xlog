@@ -2,8 +2,12 @@ package xlog
 
 import (
 	"fmt"
+	"runtime"
+	"strings"
 	"time"
 )
+
+const MODULE_NAME = "xlog"
 
 var defaultLogger Logger = Logger{}
 
@@ -26,6 +30,8 @@ var levelPriority = map[Level]int{
 type Logger struct {
 	minLevel Level
 	Time     string
+	File     string
+	Line     int
 }
 
 func Default(min Level) {
@@ -57,10 +63,34 @@ func (l *Logger) log(level Level, message string) {
 	if levelPriority[level] < levelPriority[l.minLevel] {
 		return
 	}
-	formattedMessage := fmt.Sprintf("[%s - %-5s] {\"Message\": \"%s\"}", l.Time, level, message)
+	formattedMessage := fmt.Sprintf("[%s - %-5s] {\"Message\": \"%s\"} \"%s:%s\"", l.Time, level, message, l.File, l.Line)
 	fmt.Println(formattedMessage)
 }
 
 func (l *Logger) init() {
+	_, file, line := getInfo()
+	l.File = file
+	l.Line = line
 	l.Time = time.Now().Format("2006-01-02 15:04:05")
+}
+
+func getInfo() (funcname, filename string, line int) {
+	pcs := make([]uintptr, 10)
+	n := runtime.Callers(2, pcs)
+	pcs = pcs[:n]
+	frames := runtime.CallersFrames(pcs)
+
+	for {
+		frame, more := frames.Next()
+		if !strings.Contains(frame.Function, MODULE_NAME) {
+			return frame.Function, frame.File, frame.Line
+		}
+
+		if !more {
+			break
+		}
+
+	}
+
+	return "unknown", "unknown", 0
 }
