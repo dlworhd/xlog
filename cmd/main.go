@@ -10,5 +10,4 @@ func main() {
 	xlog.Debug("DEBUG TEST")
 	xlog.Warn("WARN TEST")
 	xlog.Error("ERROR TEST")
-
 }
