@@ -23,8 +23,6 @@ Here is a simple example of how to use `xlog`:
 package main
 
 import (
-	"time"
-
 	"github.com/dlworhd/xlog/xlog"
 )
 
