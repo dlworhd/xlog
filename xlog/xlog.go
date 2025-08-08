@@ -63,12 +63,19 @@ func (l *Logger) log(level Level, message string) {
 	if levelPriority[level] < levelPriority[l.minLevel] {
 		return
 	}
-	formattedMessage := fmt.Sprintf("[%s - %-5s] {\"Message\": \"%s\"} \"%s:%s\"", l.Time, level, message, l.File, l.Line)
+	formattedMessage := fmt.Sprintf("[%s - %-5s] {\"Message\": \"%s\"} \"%s:%d\"", l.Time, level, message, l.File, l.Line)
 	fmt.Println(formattedMessage)
 }
 
 func (l *Logger) init() {
 	_, file, line := getInfo()
+
+	files := strings.Split(file, "/")
+
+	if len(files) >= 2 {
+		file = fmt.Sprintf("%s/%s", files[len(files)-2], files[len(files)-1])
+	}
+
 	l.File = file
 	l.Line = line
 	l.Time = time.Now().Format("2006-01-02 15:04:05")
