@@ -31,18 +31,15 @@ import (
 func main() {
 	// Set the minimum log level.
 	// Only logs with this level or higher will be printed.
-	xlog.Default("INFO")
-
-	for {
-		xlog.Info("This is an info message.")
-		xlog.Error("This is an error message.")
-		xlog.Debug("This message will not be printed.")
-		xlog.Warn("This is a warning message.")
-
-		time.Sleep(1 * time.Second)
-	}
+	xlog.Default("DEBUG")
+	xlog.Info("This is an info message.")
+	xlog.Error("This is an error message.")
+	xlog.Debug("This message will not be printed.")
+	xlog.Warn("This is a warning message.")
 }
 ```
+
+<img width="393" height="55" alt="image" src="https://github.com/user-attachments/assets/f214306f-b7f6-41af-8e35-f9f946751bd5" />
 
 ## Log Levels
 
