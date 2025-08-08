@@ -36,7 +36,7 @@ func main() {
 	xlog.Warn("This is a warning message.")
 }
 ```
-
+## Preview
 <img width="393" height="55" alt="image" src="https://github.com/user-attachments/assets/f214306f-b7f6-41af-8e35-f9f946751bd5" />
 
 ## Log Levels
