@@ -34,8 +34,20 @@ type Logger struct {
 	Line     int
 }
 
-func Default(min Level) {
-	defaultLogger.minLevel = min
+// Log Level = [DEBUG, INFO, WARN ,ERROR]
+func Default(log_level string) {
+	level := Level(log_level)
+
+	switch level {
+	case "DEBUG":
+	case "INFO":
+	case "WARN":
+	case "ERROR":
+	default:
+		level = "DEBUG"
+	}
+
+	defaultLogger.minLevel = level
 }
 
 func Info(message string) {
