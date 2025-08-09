@@ -37,7 +37,7 @@ func main() {
 }
 ```
 ## Preview
-<img width="393" height="55" alt="image" src="https://github.com/user-attachments/assets/f214306f-b7f6-41af-8e35-f9f946751bd5" />
+<img width="506" height="58" alt="image" src="https://github.com/user-attachments/assets/2eda5e80-08e5-4754-9ec4-08d203748fea" />
 
 ## Log Levels
 
