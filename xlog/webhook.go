@@ -45,6 +45,20 @@ func SendMessageToWebhook(webhook WebhookClient, logMessage *LogMessage, wg *syn
 	var message []byte
 	switch webhook.Name {
 	case "DISCORD":
+
+		var color int
+
+		switch logMessage.Level {
+		case "DEBUG":
+			color = 0x31CD31
+		case "INFO":
+			color = 0x3131CD
+		case "WARN":
+			color = 0xCDCD31
+		case "ERROR":
+			color = 0xCD3131
+
+		}
 		msg := DiscordMessage{
 			Embeds: []DiscordEmbed{
 				{
@@ -53,7 +67,7 @@ func SendMessageToWebhook(webhook WebhookClient, logMessage *LogMessage, wg *syn
 						{Name: "Date", Value: logMessage.Time, Inline: true},
 						{Name: "Message", Value: logMessage.Message, Inline: false},
 					},
-					Color: 0xff0000,
+					Color: color,
 				},
 			},
 		}

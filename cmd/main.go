@@ -14,4 +14,7 @@ func main() {
 	xlog.Default(log_level)
 	xlog.AddWebhook(xlog.WebhookClient{Name: "DISCORD", Url: discord_webhook_url})
 	xlog.Info("LOG TEST")
+	xlog.Debug("LOG TEST")
+	xlog.Error("LOG TEST")
+	xlog.Warn("LOG TEST")
 }
