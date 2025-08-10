@@ -1,4 +1,4 @@
-module github.com/dlworhd/xlog
+module github.com/dlworhd/logxyz
 
 go 1.23.2
 
