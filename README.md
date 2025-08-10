@@ -8,6 +8,7 @@ A simple and lightweight logging library for Go.
 -   Colored log output for better readability
 -   Displays timestamp, file name, and line number
 -   Easy to set up and use
+-   Webhook support (Discord)
 
 ## Installation
 
@@ -23,7 +24,8 @@ Here is a simple example of how to use `logxyz`:
 package main
 
 import (
-	"github.com/dlworhd/logxyz/logxyz"
+	"github.com/dlworhd/logxyz/model"
+	"github.com/dlworhd/logxyz/model/webhooks"
 )
 
 func main() {
@@ -64,3 +66,32 @@ The log output is formatted as follows:
 -   `<file>:<line>`: The file name and line number where the log was called.
 -   `<timestamp>`: The time when the log was created.
 -   `<message>`: The log message.
+
+## Webhooks
+
+`logxyz` supports sending log messages to webhooks. Currently, Discord is supported.
+
+### Discord
+
+To send log messages to a Discord channel, you need to create a `DiscordNotifier` and add it to the logger.
+
+```go
+package main
+
+import (
+	"github.com/dlworhd/logxyz/model"
+	"github.com/dlworhd/logxyz/model/webhooks"
+)
+
+func main() {
+	logxyz.Default("DEBUG")
+
+	discordNotifier := &webhooks.DiscordNotifier{
+		WebhookUrl: "YOUR_DISCORD_WEBHOOK_URL",
+	}
+
+	logxyz.AddWebhooks(discordNotifier)
+
+	logxyz.Info("This message will be sent to Discord.")
+}
+```
