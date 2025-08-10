@@ -7,6 +7,16 @@ import (
 	"sync"
 )
 
+type SlackNotifier struct {
+	WebhookUrl string
+}
+
+type DiscordNotifier struct {
+	WebhookUrl string
+}
+
+//
+
 type WebhookClient struct {
 	Name WebhookClientType
 	Url  string
@@ -18,10 +28,6 @@ const (
 	DISCORD WebhookClientType = "DISCORD"
 	SLACK   WebhookClientType = "SLACK"
 )
-
-type MessageSender interface {
-	Send(*LogMessage)
-}
 
 type DiscordEmbedField struct {
 	Name   string `json:"name"`
@@ -45,7 +51,6 @@ func SendMessageToWebhook(webhook WebhookClient, logMessage *LogMessage, wg *syn
 	var message []byte
 	switch webhook.Name {
 	case "DISCORD":
-
 		var color int
 
 		switch logMessage.Level {
@@ -57,8 +62,8 @@ func SendMessageToWebhook(webhook WebhookClient, logMessage *LogMessage, wg *syn
 			color = 0xCDCD31
 		case "ERROR":
 			color = 0xCD3131
-
 		}
+
 		msg := DiscordMessage{
 			Embeds: []DiscordEmbed{
 				{
@@ -72,6 +77,10 @@ func SendMessageToWebhook(webhook WebhookClient, logMessage *LogMessage, wg *syn
 			},
 		}
 		message, _ = json.Marshal(msg)
+	case "SLACK":
+		encodedMessage, _ := json.Marshal(map[string]string{"text": logMessage.Message})
+		message = []byte(encodedMessage)
+
 	default:
 		return
 	}

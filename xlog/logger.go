@@ -60,6 +60,7 @@ func touchLogLevel(log_level string) Level {
 // Log Level = [DEBUG, INFO, WARN ,ERROR]
 func Default(log_level string) {
 	defaultLogger.minLevel = touchLogLevel(log_level)
+
 }
 
 func Info(message string) {
