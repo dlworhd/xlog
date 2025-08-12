@@ -15,26 +15,20 @@ var defaultLogger Logger = Logger{
 
 type Level int
 
-const (
-	DEBUG Level = iota + 1
-	INFO
-	WARN
-	ERROR
-)
 const MODULE_NAME = "logxyz"
 
 var FormattedANSI = map[string]string{
-	"BLUE":   "\033[34m%s\033[0m",
-	"GREEN":  "\033[32m%s\033[0m",
-	"YELLOW": "\033[33m%s\033[0m",
-	"RED":    "\033[31m%s\033[0m",
+	"BLUE":   "\033[34m%v\033[0m",
+	"GREEN":  "\033[32m%v\033[0m",
+	"YELLOW": "\033[33m%v\033[0m",
+	"RED":    "\033[31m%v\033[0m",
 }
 
 var LevelNames = map[Level]string{
-	DEBUG: "DEBUG",
-	INFO:  "INFO",
-	WARN:  "WARN",
-	ERROR: "ERROR",
+	1: "DEBUG",
+	2: "INFO",
+	3: "WARN",
+	4: "ERROR",
 }
 
 type Logger struct {
@@ -48,11 +42,11 @@ type Webhook interface {
 }
 
 type LogMessage struct {
-	Level   Level
-	Time    string
-	File    string
-	Line    int
-	Message string
+	Level    Level
+	Time     string
+	File     string
+	Line     int
+	Messages []any
 }
 
 func SetOutput(w io.Writer) {
@@ -67,15 +61,15 @@ func AddWebhooks(wh Webhook) []Webhook {
 func touchLogLevel(log_level string) Level {
 	switch log_level {
 	case "DEBUG":
-		return DEBUG
+		return 1
 	case "INFO":
-		return INFO
+		return 2
 	case "WARN":
-		return WARN
+		return 3
 	case "ERROR":
-		return ERROR
+		return 4
 	default:
-		return DEBUG
+		return 1
 	}
 }
 
@@ -84,25 +78,25 @@ func Default(log_level string) {
 	defaultLogger.minLevel = touchLogLevel(log_level)
 }
 
-func Debug(message string) {
-	LogProcess(1, message)
+func Debug(messages ...any) {
+	LogProcess(1, messages...)
 }
 
-func Info(message string) {
-	LogProcess(2, message)
+func Info(messages ...any) {
+	LogProcess(2, messages...)
 }
 
-func Warn(message string) {
-	LogProcess(3, message)
+func Warn(messages ...any) {
+	LogProcess(3, messages...)
 }
 
-func Error(message string) {
-	LogProcess(4, message)
+func Error(messages ...any) {
+	LogProcess(4, messages...)
 }
 
-func LogProcess(level Level, message string) {
+func LogProcess(level Level, messages ...any) {
 	logMessage := &LogMessage{}
-	logMessage.Init(level, message)
+	logMessage.Init(level, messages...)
 	logMessage.FilePreProcess(2)
 	logMessage.Print()
 }
@@ -113,9 +107,9 @@ func (l *LogMessage) WebhookProcess() {
 	}
 }
 
-func (l *LogMessage) Init(level Level, message string) {
+func (l *LogMessage) Init(level Level, messages ...any) {
 	l.Level = level
-	l.Message = message
+	l.Messages = messages
 	l.Time = time.Now().Format("2006-01-02 15:04:05")
 }
 
@@ -142,25 +136,25 @@ func (l *LogMessage) Print() {
 
 	var colorLevel string
 	var colorMessage string
+	messageText := fmt.Sprintln(l.Messages...)
 
 	switch LevelNames[l.Level] {
 	case "INFO":
 		colorLevel = fmt.Sprintf(FormattedANSI["BLUE"], "INF")
-		colorMessage = fmt.Sprintf(FormattedANSI["BLUE"], l.Message)
+		colorMessage = fmt.Sprintf(FormattedANSI["BLUE"], messageText)
 	case "DEBUG":
 		colorLevel = fmt.Sprintf(FormattedANSI["GREEN"], "DBG")
-		colorMessage = fmt.Sprintf(FormattedANSI["GREEN"], l.Message)
+		colorMessage = fmt.Sprintf(FormattedANSI["GREEN"], messageText)
 	case "WARN":
 		colorLevel = fmt.Sprintf(FormattedANSI["YELLOW"], "WRN")
-		colorMessage = fmt.Sprintf(FormattedANSI["YELLOW"], l.Message)
+		colorMessage = fmt.Sprintf(FormattedANSI["YELLOW"], messageText)
 	case "ERROR":
 		colorLevel = fmt.Sprintf(FormattedANSI["RED"], "ERR")
-		colorMessage = fmt.Sprintf(FormattedANSI["RED"], l.Message)
+		colorMessage = fmt.Sprintf(FormattedANSI["RED"], messageText)
 	}
 
 	formattedMessage := fmt.Sprintf("%s %s \033[1;30m%s:%d\033[0m %s", colorLevel, l.Time, l.File, l.Line, colorMessage)
-	defaultLogger.output.Write([]byte(formattedMessage + "\n"))
-
+	defaultLogger.output.Write([]byte(formattedMessage))
 	l.WebhookProcess()
 }
 
