@@ -3,6 +3,7 @@ package webhooks
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	logxyz "github.com/dlworhd/logxyz/model"
@@ -53,7 +54,7 @@ func (n *DiscordNotifier) SendMessageToWebhook(logMessage logxyz.LogMessage) {
 				Fields: []DiscordEmbedField{
 					{Name: "Level", Value: logxyz.LevelNames[logMessage.Level], Inline: true},
 					{Name: "Date", Value: logMessage.Time, Inline: true},
-					{Name: "Message", Value: logMessage.Message, Inline: false},
+					{Name: "Message", Value: fmt.Sprintln(logMessage.Messages...), Inline: false},
 				},
 				Color: color,
 			},
