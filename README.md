@@ -1,4 +1,4 @@
-# logxyz
+# logger
 
 A simple and lightweight logging library for Go.
 
@@ -13,29 +13,29 @@ A simple and lightweight logging library for Go.
 ## Installation
 
 ```bash
-go get github.com/dlworhd/logxyz
+go get github.com/dlworhd/logger
 ```
 
 ## Usage
 
-Here is a simple example of how to use `logxyz`:
+Here is a simple example of how to use `logger`:
 
 ```go
 package main
 
 import (
-	"github.com/dlworhd/logxyz/model"
-	"github.com/dlworhd/logxyz/model/webhooks"
+	"github.com/dlworhd/logger/model"
+	"github.com/dlworhd/logger/model/webhooks"
 )
 
 func main() {
 	// Set the minimum log level.
 	// Only logs with this level or higher will be printed.
-	logxyz.Default("DEBUG")
-	logxyz.Info("This is an info message.")
-	logxyz.Error("This is an error message.")
-	logxyz.Debug("This message will not be printed.")
-	logxyz.Warn("This is a warning message.")
+	logger.Default("DEBUG")
+	logger.Info("This is an info message.")
+	logger.Error("This is an error message.")
+	logger.Debug("This message will not be printed.")
+	logger.Warn("This is a warning message.")
 }
 ```
 
@@ -52,7 +52,7 @@ The following log levels are available:
 -   `WARN`: For warnings that might indicate a problem.
 -   `ERROR`: For errors that have occurred.
 
-You can set the minimum log level using the `logxyz.Default()` function. For example, if you set the level to `INFO`, `DEBUG` messages will not be printed.
+You can set the minimum log level using the `logger.Default()` function. For example, if you set the level to `INFO`, `DEBUG` messages will not be printed.
 
 ## Log Format
 
@@ -69,7 +69,7 @@ The log output is formatted as follows:
 
 ## Webhooks
 
-`logxyz` supports sending log messages to webhooks. Currently, Discord is supported.
+`logger` supports sending log messages to webhooks. Currently, Discord is supported.
 
 ### Discord
 
@@ -79,19 +79,19 @@ To send log messages to a Discord channel, you need to create a `DiscordNotifier
 package main
 
 import (
-	"github.com/dlworhd/logxyz/model"
-	"github.com/dlworhd/logxyz/model/webhooks"
+	"github.com/dlworhd/logger/model"
+	"github.com/dlworhd/logger/model/webhooks"
 )
 
 func main() {
-	logxyz.Default("DEBUG")
+	logger.Default("DEBUG")
 
 	discordNotifier := &webhooks.DiscordNotifier{
 		WebhookUrl: "YOUR_DISCORD_WEBHOOK_URL",
 	}
 
-	logxyz.AddWebhooks(discordNotifier)
+	logger.AddWebhooks(discordNotifier)
 
-	logxyz.Info("This message will be sent to Discord.")
+	logger.Info("This message will be sent to Discord.")
 }
 ```

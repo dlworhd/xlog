@@ -1,4 +1,4 @@
-module github.com/dlworhd/logxyz
+module github.com/dlworhd/logger
 
 go 1.23.2
 

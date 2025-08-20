@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
-	logxyz "github.com/dlworhd/logxyz/model"
+	logger "github.com/dlworhd/logger/model"
 )
 
 type DiscordNotifier struct {
@@ -29,15 +29,15 @@ type DiscordMessage struct {
 }
 
 type Sender interface {
-	Send(logMessage *logxyz.LogMessage) error
+	Send(logMessage *logger.LogMessage) error
 }
 
 // Log Level, Time, Message가 담긴 객체를 message대신 넣기
-func (n *DiscordNotifier) SendMessageToWebhook(logMessage logxyz.LogMessage) {
+func (n *DiscordNotifier) SendMessageToWebhook(logMessage logger.LogMessage) {
 
 	var color int
 
-	switch logxyz.LevelNames[logMessage.Level] {
+	switch logger.LevelNames[logMessage.Level] {
 	case "DEBUG":
 		color = 0x31CD31
 	case "INFO":
@@ -52,7 +52,7 @@ func (n *DiscordNotifier) SendMessageToWebhook(logMessage logxyz.LogMessage) {
 		Embeds: []DiscordEmbed{
 			{
 				Fields: []DiscordEmbedField{
-					{Name: "Level", Value: logxyz.LevelNames[logMessage.Level], Inline: true},
+					{Name: "Level", Value: logger.LevelNames[logMessage.Level], Inline: true},
 					{Name: "Date", Value: logMessage.Time, Inline: true},
 					{Name: "Message", Value: fmt.Sprintln(logMessage.Messages...), Inline: false},
 				},

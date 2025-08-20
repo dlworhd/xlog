@@ -1,4 +1,4 @@
-package logxyz
+package logger
 
 import (
 	"fmt"
@@ -15,7 +15,7 @@ var defaultLogger Logger = Logger{
 
 type Level int
 
-const MODULE_NAME = "logxyz"
+const MODULE_NAME = "logger"
 
 var FormattedANSI = map[string]string{
 	"BLUE":   "\033[34m%v\033[0m",
