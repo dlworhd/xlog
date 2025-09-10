@@ -1,4 +1,4 @@
-module github.com/dlworhd/logger
+module github.com/bankusy/logger
 
 go 1.23.2
 

@@ -13,7 +13,7 @@ A simple and lightweight logging library for Go.
 ## Installation
 
 ```bash
-go get github.com/dlworhd/logger
+go get github.com/bankusy/logger
 ```
 
 ## Usage
@@ -24,8 +24,8 @@ Here is a simple example of how to use `logger`:
 package main
 
 import (
-	"github.com/dlworhd/logger/model"
-	"github.com/dlworhd/logger/model/webhooks"
+	"github.com/bankusy/logger/model"
+	"github.com/bankusy/logger/model/webhooks"
 )
 
 func main() {
@@ -79,8 +79,8 @@ To send log messages to a Discord channel, you need to create a `DiscordNotifier
 package main
 
 import (
-	"github.com/dlworhd/logger/model"
-	"github.com/dlworhd/logger/model/webhooks"
+	"github.com/bankusy/logger/model"
+	"github.com/bankusy/logger/model/webhooks"
 )
 
 func main() {

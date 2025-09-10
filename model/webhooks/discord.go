@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
-	logger "github.com/dlworhd/logger/model"
+	logger "github.com/bankusy/logger/model"
 )
 
 type DiscordNotifier struct {
